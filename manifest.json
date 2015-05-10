@@ -1,14 +1,15 @@
 {
-  "name": "Page action by URL",
+  "name": "Sentimental Analysis",
   "version": "1.0",
-  "description": "Shows a page action for urls which have the letter 'g' in them.",
+  "description": "Highlight different sentences",
   "background": {
     "scripts": ["background.js"],
     "persistent": false
   },
   "content_scripts": [{
         "matches": ["*://*.yelp.com/*"],
-        "js":      ["content.js"]
+        "js":      ["content.js"],
+        "run_at": "document_end"
     }],
   "page_action" :
   {
