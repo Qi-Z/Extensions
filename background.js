@@ -28,3 +28,7 @@ chrome.runtime.onInstalled.addListener(function() {
     ]);
   });
 });
+
+chrome.pageAction.onClicked.addListener(function(){
+  alert("Hi!")
+});
