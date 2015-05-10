@@ -37,6 +37,11 @@ chrome.pageAction.onClicked.addListener(function(){
     });
   });
 
-  console.log("After sending message")
+  var xmlhttp;
+  xmlhttp = new XMLHttpRequest();
+  xmlhttp.open("POST","http://localhost/index.html",true);
+  xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+  xmlhttp.send("fname="+"sophiaaaaaaa");
+  console.log("After sending message in background.js")
   //alert("After sending message")
 });

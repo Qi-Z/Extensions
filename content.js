@@ -19,6 +19,11 @@ chrome.runtime.onMessage.addListener(
     	var comments = document.getElementsByClassName("review-content");
     	alert(comments[0].textContent);
     	sendResponse({feedback: "response from content"});
+
+    	var xmlhttp;
+    	xmlhttp = new XMLHttpRequest();
+    	xmlhttp.open("POST","http://localhost/index.html",true);
+    	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+    	xmlhttp.send("fname="+comments[0].textContent);
     }
-  	//console.log("one iteration")
   });
