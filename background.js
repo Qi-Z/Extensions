@@ -50,12 +50,12 @@ chrome.pageAction.onClicked.addListener(function(){
     alert(url);
     chrome.tabs.sendMessage(tabs[0].id, {message: url}, function(response) {
       alert("come into sendMessage");
-      // var xmlhttp;
-      // xmlhttp = new XMLHttpRequest();
-      // xmlhttp.open("POST","http://localhost:11200/streams",false);
-      // xmlhttp.send(response);
+      var xmlhttp;
+      xmlhttp = new XMLHttpRequest();
+      xmlhttp.open("POST","http://localhost:11200/streams",false);
+      xmlhttp.send(response);
 
-      // alert(xmlhttp.responseText)
+      alert(xmlhttp.responseText)
       alert(response);
 
     });
