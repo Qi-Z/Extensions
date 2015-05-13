@@ -29,20 +29,25 @@ chrome.runtime.onInstalled.addListener(function() {
     ]);
   });
 });
-
+// var current_url;
+// chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, function (tabs) {
+//     var current_url = tabs[0].url;
+// });
 chrome.pageAction.onClicked.addListener(function(){
   console.log("Before sending message")
+
   chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
     chrome.tabs.sendMessage(tabs[0].id, {message: "message sent from background"}, function(response) {
-      console.log(response.feedback);
+      var xmlhttp;
+      xmlhttp = new XMLHttpRequest();
+      xmlhttp.open("POST","http://localhost:11200/streams",false);
+      xmlhttp.send(response);
+     
+      alert( xmlhttp.responseText)
+      
+
     });
   });
 
-  // var xmlhttp;
-  // xmlhttp = new XMLHttpRequest();
-  // xmlhttp.open("GET","http://216.171.25.105:1970/streams",true);
-  // xmlHttp.send(null);
-  //   alert( xmlhttp.responseText)
-  // console.log("After sending message in background.js")
-  //alert("After sending message")
+  
 });
