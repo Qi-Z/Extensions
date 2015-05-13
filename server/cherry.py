@@ -23,8 +23,6 @@ assert sys.getdefaultencoding().lower() == "utf-8";
 def enable_crossdomain():
     cherrypy.response.headers["Access-Control-Allow-Origin"] = "*";
     cherrypy.response.headers["Access-Control-Allow-Methods"] = "GET, POST, HEAD, PUT, DELETE";
-    #cherrypy.response.headers["Access-Control-Allow-Headers"] = "Cache-Control, X-Proxy-Authorization, X-Requested-With";
-    #cherrypy.response.headers["Access-Control-Max-Age"] = "604800";
 
 class Stream(object):
     exposed = True;
@@ -88,16 +86,15 @@ class Root(object):
         file.close();
         return data;
     
-# http://192.168.20.94:1970/
+
 root = Root()
-# http://192.168.20.94:1970/streams
-# http://192.168.20.94:1970/streams/100
+
 root.streams = Streams();
 
 conf = {
     'global': {
         'server.socket_host': '0.0.0.0',
-        'server.socket_port': 8080,
+        'server.socket_port': 11200,
         'tools.encode.on':True, 
         'tools.encode.encoding':'utf8', 
     },

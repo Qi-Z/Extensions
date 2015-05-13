@@ -1,72 +1,30 @@
 /* Listen for messages */
-// chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
-//     /* If the received message has the expected format... */
-//     if (msg.text && (msg.text == "report_back")) {
-//         /* Call the specified callback, passing 
-//            the web-pages DOM content as argument */
-//         sendResponse(document.all[0].outerHTML);
-//         alert(document.all[0].outerHTML)
-//     }
-// });
 var comment_section_tags = [".review-content p"]
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
-    // console.log(sender.tab ?
-    //             "from a content script:" + sender.tab.url :
-    //             "from the extension");
-    if (request.message == "message sent from background")
-    {
-    	//var comments = document.getElementsByClassName("review-content");
-// <<<<<<< HEAD
-//         var comments = document.querySelectorAll(".review-content p");
-//         comments[0].style.color = "magenta";
-//     	alert(comments[0].textContent);
-//     	sendResponse({feedback: "response from content"});
-
-
-//     	// var xmlhttp;
-//     	// xmlhttp = new XMLHttpRequest();
-//     	// xmlhttp.open("POST","http://localhost/index.html",true);
-//     	// xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-//     	// xmlhttp.send("fname="+comments[0].textContent);
-
-//         console.log("send request to server......");
-//     	var xmlhttp;
-//     	xmlhttp = new XMLHttpRequest();
-
-//         xmlhttp.open( "POST", "http://localhost:11200/streams", false );
-//         xmlhttp.send("hi!");
-//         alert(xmlhttp.responseText);
-//         console.log(xmlhttp.responseText);
-//         console.log("Received......");
-// =======
-        var comments = document.querySelectorAll(".review-content p");//Yelp specific
+        var comments;
         var comments_list = {};
-        for (var i = 0; i < comments.length; ++i){
-            var each_comment_node = comments[i];
-            comments_list[i.toString()] = each_comment_node.textContent;
-
-
-        }
-        var json = JSON.stringify(comments_list);
-        alert("json test"+json);
-
-        //comments[0].style.color = "magenta";
-
-    	//alert(comments[0].textContent);
-    	sendResponse(json);
-     //    console.log("send request to server......");
-    	// var xmlhttp;
-    	// xmlhttp = new XMLHttpRequest();
-
-     //    xmlhttp.open( "POST", "http://localhost:11200/streams", false );
-     //    xmlhttp.send("hi!");
-     //    alert(xmlhttp.responseText);
-     //    console.log(xmlhttp.responseText);
-     //    console.log("Received......");
-    	
-    	
-    	
->>>>>>> 3fbcf2d4959f27a8e3dde726cfcb568d884f1d30
+    if (request.message.indexOf("yelp") > -1)
+    {
+        comments = document.querySelectorAll(".review-content p");//Yelp specific
     }
+    else if(request.message.indexOf("walmart") > -1)
+    {
+        comments = document.querySelectorAll(".customer-review-text p");
+    }
+    else if(request.message.indexOf("tripadvisor") > -1)
+    {
+        comments = document.querySelectorAll(".entry p");
+    }
+    else
+        comments = document.querySelectorAll(".BVRRReviewTextParagraph BVRRReviewTextFirstParagraph BVRRReviewTextLastParagraph p");
+
+    for (var i = 0; i < comments.length; ++i){
+        var each_comment_node = comments[i];
+        comments_list[i.toString()] = each_comment_node.textContent;
+    }
+    var json = JSON.stringify(comments_list);
+    alert("json test"+json);
+    sendResponse(json);
+
   });
