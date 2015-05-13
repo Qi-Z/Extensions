@@ -11,13 +11,15 @@ http://www.redmine.org/projects/redmine/wiki/Rest_api
 import sys;
 import cherrypy
 import time;
-
+import json;
+import re
 # set the default encoding to utf-8
 # reload sys model to enable the getdefaultencoding method.
 reload(sys);
 # using exec to set the encoding, to avoid error in IDE.
 exec("sys.setdefaultencoding('utf-8')");
 assert sys.getdefaultencoding().lower() == "utf-8";
+
 
 # supprt crossdomain ajax script
 def enable_crossdomain():
@@ -55,7 +57,7 @@ class Streams(object):
     def GET(self):
         enable_crossdomain();
         print("[Streams][GET] get all streams");
-        return "all stream list";
+        return "response from GET";
     def PUT(self):
         enable_crossdomain();
         print("[Streams][PUT] update all streams. NotAllowed");
@@ -68,7 +70,18 @@ class Streams(object):
         enable_crossdomain();
         print("[Streams][POST] create a new streams");
         info = cherrypy.request.body.read()
-        print("[Streams][POST] new stream created. info=%s"%(info));
+        #print("[Streams][POST] new stream created. info=%s"%(info));
+
+        list_of_comments = json.loads(info)
+        print(type(list_of_comments))
+        #print("from json!----"+list_of_comments["0"])
+        for key in list_of_comments:
+            #sentences_list = []
+            sentences = list_of_comments[key]
+            #print('------'+sentences+'-------')
+            sentences_list = re.split(r' *[\.\?!][\'"\)\]]* *', sentences)
+            
+            print(sentences_list[0])
         return "Message from server!!!!!!";
     def __getattr__(self, name):
         # stream operations.
@@ -97,9 +110,10 @@ root.streams = Streams();
 conf = {
     'global': {
         'server.socket_host': '0.0.0.0',
-        'server.socket_port': 8080,
+        'server.socket_port': 11200,
         'tools.encode.on':True, 
         'tools.encode.encoding':'utf8', 
+
     },
     '/': {
         'request.dispatch': cherrypy.dispatch.MethodDispatcher(),

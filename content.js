@@ -8,7 +8,7 @@
 //         alert(document.all[0].outerHTML)
 //     }
 // });
-var comment_section_tags = [".review-content p"]
+var comment_section_tags = [".review-content p", "", "", ""];
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
     // console.log(sender.tab ?
