@@ -12,7 +12,13 @@ import sys;
 import cherrypy
 import time;
 import json;
-import re
+import re;
+
+import s2v as s2v
+import numpy as np
+import pickle
+
+
 # set the default encoding to utf-8
 # reload sys model to enable the getdefaultencoding method.
 reload(sys);
@@ -65,6 +71,7 @@ class Streams(object):
         print("[Streams][DELETE] delete all streams. NotAllowed");
         raise cherrypy.HTTPError(405)
     def POST(self):
+        clf = pickle.load(open("./lr.p", "rb"))
         enable_crossdomain();
         print("[Streams][POST] create a new streams");
         info = cherrypy.request.body.read()
@@ -78,9 +85,26 @@ class Streams(object):
             sentences = list_of_comments[key]
             #print('------'+sentences+'-------')
             sentences_list = re.split(r' *[\.\?!][\'"\)\]]* *', sentences)
-            
-            print(sentences_list[0])
-        return "Message from server!!!!!!";
+            vect = []
+            #print sentences_list
+            for each_sent in sentences_list:
+
+                s2v.gen_feature_test(each_sent, vect)
+            test_instance = np.array(vect)
+            #print test_instance
+            #print len(test_instance), len(test_instance[0])
+            prediction = clf.predict(test_instance)
+            comment_string = ''
+            for i in range(len(prediction)):
+                if int(prediction[i]) == 2:
+                    comment_string += '<mark class = \"mark_as_praise\">'+sentences_list[i]+'</mark>' + '.'
+                else:
+                    comment_string += sentences_list[i] + '.'
+            list_of_comments[key] = comment_string
+            comment_string = ''
+            #print "predicts", prediction
+            #print(sentences_list[0])
+        return json.dumps(list_of_comments);
     def __getattr__(self, name):
         # stream operations.
         if name.isdigit():
