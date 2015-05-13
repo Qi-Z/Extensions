@@ -9,7 +9,15 @@ var condition1 = new chrome.declarativeContent.PageStateMatcher({
           });
 var condition2 = new chrome.declarativeContent.PageStateMatcher({
             pageUrl: { urlContains: 'yelp' },
-            css: ["div.review-content", "div.media-story"]
+            css: ["div.review-content","div.media-story"]
+          });
+var condition3 = new chrome.declarativeContent.PageStateMatcher({
+            pageUrl: { urlContains: 'tripadvisor' },
+            css: ["div.entry"]
+          });
+var condition4 = new chrome.declarativeContent.PageStateMatcher({
+            pageUrl: { urlContains: 'sephora' },
+            css: ["span.BVRRReviewText"]
           });
 
 
@@ -21,7 +29,7 @@ chrome.runtime.onInstalled.addListener(function() {
       {
         // That fires when a page's URL contains a 'g' ...
         conditions: [
-          condition1, condition2
+          condition1, condition2, condition3, condition4
         ],
         // And shows the extension's page action.
         actions: [ new chrome.declarativeContent.ShowPageAction() ]
@@ -37,14 +45,18 @@ chrome.pageAction.onClicked.addListener(function(){
   console.log("Before sending message");
 
   chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-    chrome.tabs.sendMessage(tabs[0].id, {message: "message sent from background"}, function(response) {
-      var xmlhttp;
-      xmlhttp = new XMLHttpRequest();
-      xmlhttp.open("POST","http://localhost:11200/streams",false);
-      xmlhttp.send(response);
-     
-      alert( xmlhttp.responseText)
-      
+    console.log("Before getting url");
+    var url = tabs[0].url;
+    alert(url);
+    chrome.tabs.sendMessage(tabs[0].id, {message: url}, function(response) {
+      alert("come into sendMessage");
+      // var xmlhttp;
+      // xmlhttp = new XMLHttpRequest();
+      // xmlhttp.open("POST","http://localhost:11200/streams",false);
+      // xmlhttp.send(response);
+
+      // alert(xmlhttp.responseText)
+      alert(response);
 
     });
   });

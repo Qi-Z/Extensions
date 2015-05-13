@@ -25,30 +25,28 @@ assert sys.getdefaultencoding().lower() == "utf-8";
 def enable_crossdomain():
     cherrypy.response.headers["Access-Control-Allow-Origin"] = "*";
     cherrypy.response.headers["Access-Control-Allow-Methods"] = "GET, POST, HEAD, PUT, DELETE";
-    #cherrypy.response.headers["Access-Control-Allow-Headers"] = "Cache-Control, X-Proxy-Authorization, X-Requested-With";
-    #cherrypy.response.headers["Access-Control-Max-Age"] = "604800";
 
-class Stream(object):
-    exposed = True;
-    def __init__(self, stream_id):
-        self.stream_id = stream_id;
-    def GET(self):
-        enable_crossdomain();
-        print("[Stream][GET] get a stream. id=%s"%(self.stream_id));
-        return "id=%s"%(self.stream_id);
-    def PUT(self):
-        enable_crossdomain();
-        print("[Stream][PUT] update a stream. id=%s"%(self.stream_id));
-        self.stream_id = cherrypy.request.body.read()
-    def DELETE(self):
-        enable_crossdomain();
-        print("[Streams][DELETE] delete a stream. id=%s"%(self.stream_id));
-    def POST(self):
-        enable_crossdomain();
-        print("[Streams][POST] create a stream. NotAllowed");
-        raise cherrypy.HTTPError(405)
-    def OPTIONS(self):
-        enable_crossdomain();
+# class Stream(object):
+#     exposed = True;
+#     def __init__(self, stream_id):
+#         self.stream_id = stream_id;
+#     def GET(self):
+#         enable_crossdomain();
+#         print("[Stream][GET] get a stream. id=%s"%(self.stream_id));
+#         return "id=%s"%(self.stream_id);
+#     def PUT(self):
+#         enable_crossdomain();
+#         print("[Stream][PUT] update a stream. id=%s"%(self.stream_id));
+#         self.stream_id = cherrypy.request.body.read()
+#     def DELETE(self):
+#         enable_crossdomain();
+#         print("[Streams][DELETE] delete a stream. id=%s"%(self.stream_id));
+#     def POST(self):
+#         enable_crossdomain();
+#         print("[Streams][POST] create a stream. NotAllowed");
+#         raise cherrypy.HTTPError(405)
+#     def OPTIONS(self):
+#         enable_crossdomain();
 
 class Streams(object):
     exposed = True
@@ -70,7 +68,7 @@ class Streams(object):
         enable_crossdomain();
         print("[Streams][POST] create a new streams");
         info = cherrypy.request.body.read()
-        #print("[Streams][POST] new stream created. info=%s"%(info));
+        # #print("[Streams][POST] new stream created. info=%s"%(info));
 
         list_of_comments = json.loads(info)
         print(type(list_of_comments))
@@ -101,10 +99,9 @@ class Root(object):
         file.close();
         return data;
     
-# http://192.168.20.94:1970/
+
 root = Root()
-# http://192.168.20.94:1970/streams
-# http://192.168.20.94:1970/streams/100
+
 root.streams = Streams();
 
 conf = {
