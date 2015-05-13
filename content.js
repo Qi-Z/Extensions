@@ -20,10 +20,10 @@ chrome.runtime.onMessage.addListener(
     	alert(comments[0].textContent);
     	sendResponse({feedback: "response from content"});
 
-    	var xmlhttp;
-    	xmlhttp = new XMLHttpRequest();
-    	xmlhttp.open("POST","http://localhost/index.html",true);
-    	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-    	xmlhttp.send("fname="+comments[0].textContent);
+    	// var xmlhttp;
+    	// xmlhttp = new XMLHttpRequest();
+    	// xmlhttp.open("POST","http://localhost/index.html",true);
+    	// xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+    	// xmlhttp.send("fname="+comments[0].textContent);
     }
   });
