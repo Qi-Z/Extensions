@@ -8,7 +8,7 @@
 //         alert(document.all[0].outerHTML)
 //     }
 // });
-
+var comment_section_tags = [".review-content p"]
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
     // console.log(sender.tab ?
@@ -16,15 +16,17 @@ chrome.runtime.onMessage.addListener(
     //             "from the extension");
     if (request.message == "message sent from background")
     {
-    	var comments = document.getElementsByClassName("review-content");
+    	//var comments = document.getElementsByClassName("review-content");
+        var comments = document.querySelectorAll(".review-content p");
+        comments[0].style.color = "magenta";
     	alert(comments[0].textContent);
     	sendResponse({feedback: "response from content"});
         console.log("send request to server......");
     	var xmlhttp;
     	xmlhttp = new XMLHttpRequest();
 
-        xmlhttp.open( "GET", "http://130.126.255.36:1970/streams", false );
-        xmlhttp.send(null);
+        xmlhttp.open( "POST", "http://localhost:11200/streams", false );
+        xmlhttp.send("hi!");
         alert(xmlhttp.responseText);
         console.log(xmlhttp.responseText);
         console.log("Received......");
