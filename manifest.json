@@ -18,6 +18,7 @@
   },
   "permissions" : [
     "declarativeContent"
+    
   ],
   "icons" : {
     "48" : "icon-48.png",

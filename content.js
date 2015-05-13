@@ -19,11 +19,17 @@ chrome.runtime.onMessage.addListener(
     	var comments = document.getElementsByClassName("review-content");
     	alert(comments[0].textContent);
     	sendResponse({feedback: "response from content"});
-
+        console.log("send request to server......");
     	var xmlhttp;
     	xmlhttp = new XMLHttpRequest();
-    	xmlhttp.open("POST","http://localhost/index.html",true);
-    	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-    	xmlhttp.send("fname="+comments[0].textContent);
+
+        xmlhttp.open( "POST", "http://216.171.25.105:1970/streams", false );
+        xmlhttp.send("hello");
+        alert(xmlhttp.responseText);
+        console.log(xmlhttp.responseText);
+        console.log("Received......");
+    	
+    	
+    	
     }
   });

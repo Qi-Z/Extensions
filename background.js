@@ -12,6 +12,7 @@ var condition2 = new chrome.declarativeContent.PageStateMatcher({
             css: ["div.review-content", "div.media-story"]
           });
 
+
 chrome.runtime.onInstalled.addListener(function() {
   // Replace all rules ...
   chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
@@ -37,11 +38,11 @@ chrome.pageAction.onClicked.addListener(function(){
     });
   });
 
-  var xmlhttp;
-  xmlhttp = new XMLHttpRequest();
-  xmlhttp.open("POST","http://localhost/index.html",true);
-  xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-  xmlhttp.send("fname="+"sophiaaaaaaa");
-  console.log("After sending message in background.js")
+  // var xmlhttp;
+  // xmlhttp = new XMLHttpRequest();
+  // xmlhttp.open("GET","http://216.171.25.105:1970/streams",true);
+  // xmlHttp.send(null);
+  //   alert( xmlhttp.responseText)
+  // console.log("After sending message in background.js")
   //alert("After sending message")
 });
