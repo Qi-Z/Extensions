@@ -17,19 +17,30 @@ chrome.runtime.onMessage.addListener(
     if (request.message == "message sent from background")
     {
     	//var comments = document.getElementsByClassName("review-content");
-        var comments = document.querySelectorAll(".review-content p");
-        comments[0].style.color = "magenta";
-    	alert(comments[0].textContent);
-    	sendResponse({feedback: "response from content"});
-        console.log("send request to server......");
-    	var xmlhttp;
-    	xmlhttp = new XMLHttpRequest();
+        var comments = document.querySelectorAll(".review-content p");//Yelp specific
+        var comments_list = {};
+        for (var i = 0; i < comments.length; ++i){
+            var each_comment_node = comments[i];
+            comments_list[i.toString()] = each_comment_node.textContent;
 
-        xmlhttp.open( "POST", "http://localhost:11200/streams", false );
-        xmlhttp.send("hi!");
-        alert(xmlhttp.responseText);
-        console.log(xmlhttp.responseText);
-        console.log("Received......");
+
+        }
+        var json = JSON.stringify(comments_list);
+        alert("json test"+json);
+
+        //comments[0].style.color = "magenta";
+
+    	//alert(comments[0].textContent);
+    	sendResponse(json);
+     //    console.log("send request to server......");
+    	// var xmlhttp;
+    	// xmlhttp = new XMLHttpRequest();
+
+     //    xmlhttp.open( "POST", "http://localhost:11200/streams", false );
+     //    xmlhttp.send("hi!");
+     //    alert(xmlhttp.responseText);
+     //    console.log(xmlhttp.responseText);
+     //    console.log("Received......");
     	
     	
     	

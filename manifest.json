@@ -17,7 +17,8 @@
     "default_title" : "Start analysis"
   },
   "permissions" : [
-    "declarativeContent"
+    "declarativeContent",
+    "tabs"
     
   ],
   "icons" : {
