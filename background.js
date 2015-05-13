@@ -47,18 +47,26 @@ chrome.pageAction.onClicked.addListener(function(){
   chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
     console.log("Before getting url");
     var url = tabs[0].url;
-    alert(url);
-    chrome.tabs.sendMessage(tabs[0].id, {message: url}, function(response) {
-      alert("come into sendMessage");
+    //alert(url);
+    var response_text;
+    chrome.tabs.sendMessage(tabs[0].id, {IsData: "false", message: url}, function(response) {
+      //alert("come into sendMessage");
+
       var xmlhttp;
       xmlhttp = new XMLHttpRequest();
       xmlhttp.open("POST","http://localhost:11200/streams",false);
       xmlhttp.send(response);
 
-      alert(xmlhttp.responseText)
-      alert(response);
 
+      //alert(xmlhttp.responseText)
+      response_text = xmlhttp.responseText;
+       chrome.tabs.sendMessage(tabs[0].id, {IsData: "true", message: response_text}, function(response){
+        //alert(response+"Last response");
+        alert(response);
+       });
     });
+    //send classified reviews back to content.js
+
   });
 
   
