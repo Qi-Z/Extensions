@@ -55,7 +55,7 @@ class Streams(object):
     def GET(self):
         enable_crossdomain();
         print("[Streams][GET] get all streams");
-        return data + "all stream list";
+        return "all stream list";
     def PUT(self):
         enable_crossdomain();
         print("[Streams][PUT] update all streams. NotAllowed");
@@ -69,7 +69,7 @@ class Streams(object):
         print("[Streams][POST] create a new streams");
         info = cherrypy.request.body.read()
         print("[Streams][POST] new stream created. info=%s"%(info));
-        return "new stream created";
+        return "Message from server!!!!!!";
     def __getattr__(self, name):
         # stream operations.
         if name.isdigit():
@@ -97,7 +97,7 @@ root.streams = Streams();
 conf = {
     'global': {
         'server.socket_host': '0.0.0.0',
-        'server.socket_port': 1970,
+        'server.socket_port': 8080,
         'tools.encode.on':True, 
         'tools.encode.encoding':'utf8', 
     },

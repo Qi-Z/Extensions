@@ -23,8 +23,8 @@ chrome.runtime.onMessage.addListener(
     	var xmlhttp;
     	xmlhttp = new XMLHttpRequest();
 
-        xmlhttp.open( "POST", "http://216.171.25.105:1970/streams", false );
-        xmlhttp.send("hello");
+        xmlhttp.open( "GET", "http://130.126.255.36:1970/streams", false );
+        xmlhttp.send(null);
         alert(xmlhttp.responseText);
         console.log(xmlhttp.responseText);
         console.log("Received......");
