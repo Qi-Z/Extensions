@@ -11,7 +11,8 @@ http://www.redmine.org/projects/redmine/wiki/Rest_api
 import sys;
 import cherrypy
 import time;
-
+import json;
+import re
 # set the default encoding to utf-8
 # reload sys model to enable the getdefaultencoding method.
 reload(sys);
@@ -19,32 +20,33 @@ reload(sys);
 exec("sys.setdefaultencoding('utf-8')");
 assert sys.getdefaultencoding().lower() == "utf-8";
 
+
 # supprt crossdomain ajax script
 def enable_crossdomain():
     cherrypy.response.headers["Access-Control-Allow-Origin"] = "*";
     cherrypy.response.headers["Access-Control-Allow-Methods"] = "GET, POST, HEAD, PUT, DELETE";
 
-class Stream(object):
-    exposed = True;
-    def __init__(self, stream_id):
-        self.stream_id = stream_id;
-    def GET(self):
-        enable_crossdomain();
-        print("[Stream][GET] get a stream. id=%s"%(self.stream_id));
-        return "id=%s"%(self.stream_id);
-    def PUT(self):
-        enable_crossdomain();
-        print("[Stream][PUT] update a stream. id=%s"%(self.stream_id));
-        self.stream_id = cherrypy.request.body.read()
-    def DELETE(self):
-        enable_crossdomain();
-        print("[Streams][DELETE] delete a stream. id=%s"%(self.stream_id));
-    def POST(self):
-        enable_crossdomain();
-        print("[Streams][POST] create a stream. NotAllowed");
-        raise cherrypy.HTTPError(405)
-    def OPTIONS(self):
-        enable_crossdomain();
+# class Stream(object):
+#     exposed = True;
+#     def __init__(self, stream_id):
+#         self.stream_id = stream_id;
+#     def GET(self):
+#         enable_crossdomain();
+#         print("[Stream][GET] get a stream. id=%s"%(self.stream_id));
+#         return "id=%s"%(self.stream_id);
+#     def PUT(self):
+#         enable_crossdomain();
+#         print("[Stream][PUT] update a stream. id=%s"%(self.stream_id));
+#         self.stream_id = cherrypy.request.body.read()
+#     def DELETE(self):
+#         enable_crossdomain();
+#         print("[Streams][DELETE] delete a stream. id=%s"%(self.stream_id));
+#     def POST(self):
+#         enable_crossdomain();
+#         print("[Streams][POST] create a stream. NotAllowed");
+#         raise cherrypy.HTTPError(405)
+#     def OPTIONS(self):
+#         enable_crossdomain();
 
 class Streams(object):
     exposed = True
@@ -53,7 +55,7 @@ class Streams(object):
     def GET(self):
         enable_crossdomain();
         print("[Streams][GET] get all streams");
-        return "all stream list";
+        return "response from GET";
     def PUT(self):
         enable_crossdomain();
         print("[Streams][PUT] update all streams. NotAllowed");
@@ -66,7 +68,18 @@ class Streams(object):
         enable_crossdomain();
         print("[Streams][POST] create a new streams");
         info = cherrypy.request.body.read()
-        print("[Streams][POST] new stream created. info=%s"%(info));
+        # #print("[Streams][POST] new stream created. info=%s"%(info));
+
+        list_of_comments = json.loads(info)
+        print(type(list_of_comments))
+        #print("from json!----"+list_of_comments["0"])
+        for key in list_of_comments:
+            #sentences_list = []
+            sentences = list_of_comments[key]
+            #print('------'+sentences+'-------')
+            sentences_list = re.split(r' *[\.\?!][\'"\)\]]* *', sentences)
+            
+            print(sentences_list[0])
         return "Message from server!!!!!!";
     def __getattr__(self, name):
         # stream operations.
@@ -97,6 +110,7 @@ conf = {
         'server.socket_port': 11200,
         'tools.encode.on':True, 
         'tools.encode.encoding':'utf8', 
+
     },
     '/': {
         'request.dispatch': cherrypy.dispatch.MethodDispatcher(),
